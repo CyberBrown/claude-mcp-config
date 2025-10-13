@@ -1,0 +1,6 @@
+# Environment variables with secrets
+.env
+
+# Backups
+*.backup.json
+*_backup.json

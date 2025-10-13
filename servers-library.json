@@ -1,0 +1,44 @@
+{
+  "vibe-check": {
+    "command": "node",
+    "args": [
+      "/home/chris/mcp-servers/vibe-check-mcp-server/build/index.js"
+    ],
+    "env": {
+      "GEMINI_API_KEY": "${GEMINI_API_KEY}",
+      "MCP_TRANSPORT": "stdio"
+    },
+    "type": "stdio"
+  },
+  "sequential-thinking": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "@modelcontextprotocol/server-sequential-thinking"
+    ]
+  },
+  "cloudflare": {
+    "command": "npx",
+    "args": [
+      "mcp-remote",
+      "https://docs.mcp.cloudflare.com/sse"
+    ]
+  },
+  "linear": {
+    "command": "npx",
+    "args": [
+      "mcp-remote",
+      "https://mcp.linear.app/sse"
+    ]
+  },
+  "vercel": {
+    "type": "http",
+    "url": "https://mcp.vercel.com/"
+  },
+  "github": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-github"],
+    "env": {
+      "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+    }
+}
