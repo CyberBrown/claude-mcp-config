@@ -1,5 +1,6 @@
 {
   "vibe-check": {
+    "description": "Vibe Check is great for giving Claude peer review for big projects",
     "command": "node",
     "args": [
       "/home/chris/mcp-servers/vibe-check-mcp-server/build/index.js"
@@ -11,34 +12,88 @@
     "type": "stdio"
   },
   "sequential-thinking": {
+    "description": "Sequential Thinking server for advanced reasoning tasks, official Anthropic",
     "command": "npx",
     "args": [
       "-y",
       "@modelcontextprotocol/server-sequential-thinking"
-    ]
+    ],
+    "type": "stdio"
   },
   "cloudflare": {
+    "description": "Cloudflare specific MCP server, turn on only if doing CF work",
     "command": "npx",
     "args": [
       "mcp-remote",
       "https://docs.mcp.cloudflare.com/sse"
-    ]
+    ],
+    "type": "stdio"
   },
   "linear": {
+    "description": "Advanced todo list Claude can read and write",
     "command": "npx",
     "args": [
       "mcp-remote",
       "https://mcp.linear.app/sse"
-    ]
+    ],
+    "type": "stdio"
   },
   "vercel": {
+    "description": "I have not found a need for this yet",
     "type": "http",
     "url": "https://mcp.vercel.com/"
   },
   "github": {
+    "description": "I'm not a huge fan of this one, but some people love it",
     "command": "npx",
     "args": ["-y", "@modelcontextprotocol/server-github"],
     "env": {
       "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
-    }
+    },
+    "type": "stdio"
+  },
+  "sentry": {
+    "description": "When setting up sentry error logging this MCP server is useful",
+    "command": "npx",
+    "args": ["mcp-remote", "https://mcp.sentry.io/sse"],
+    "type": "stdio"
+  },
+  "supabase": {
+    "description": "Great for deep database work, provided you're using Supabase",
+    "type": "http",
+    "url": "https://mcp.supabase.com/mcp"
+  },
+  "gcloud": {
+    "description": "Have not spent a lot of time with this one yet",
+    "command": "npx",
+    "args": ["-y", "@google-cloud/gcloud-mcp"],
+    "type": "stdio"
+  },
+  "Pieces": {
+    "description": "Big brother is watching. But actually super useful. Basically long term memory for Claude",
+    "command": "pieces",
+    "args": [
+      "--ignore-onboarding",
+      "mcp",
+      "start"
+    ],
+    "type": "stdio"
+  },
+  "GitMCP": {
+    "description": "Remote MCP server for your project. Replace the URL with your own gitmcp server",
+    "command": "npx",
+    "args": ["-y", "mcp-remote", "${GITMCP_SERVER}"],
+    "type": "stdio"
+  },
+  "context7": {
+    "description": "Document library",
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp", "--api-key", "${CONTEXT7_API_KEY}"],
+    "type": "stdio"
+  },
+  "apify": {
+    "description": "Apify MCP server for web scraping tasks",
+    "type": "http",
+    "url": "https://mcp.apify.com"
+  }
 }
