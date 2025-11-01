@@ -96,11 +96,10 @@
     "type": "http",
     "url": "https://mcp.apify.com"
   },
-  "mcpServers": {
-      "description": "developer-guides",
-        "url": "https://developer-guides-mcp.solamp.workers.dev",
-        "transport": "http"
-      }
-    
-    }
-  
+  "developer-guides": {
+    "description": "Developer guides MCP server",
+    "command": "npx",
+    "args": ["mcp-remote", "https://developer-guides-mcp.solamp.workers.dev"],
+    "type": "stdio"
+  }
+}
