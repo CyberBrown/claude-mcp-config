@@ -95,5 +95,12 @@
     "description": "Apify MCP server for web scraping tasks",
     "type": "http",
     "url": "https://mcp.apify.com"
+  },
+  "mcpServers": {
+      "developer-guides": {
+        "url": "https://developer-guides-mcp.solamp.workers.dev",
+        "transport": "http"
+      }
+    
+    }
   }
-}
