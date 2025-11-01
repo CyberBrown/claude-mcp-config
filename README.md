@@ -7,7 +7,22 @@ Library prepopulated with a few good picks but you can of course change that to 
 
 ## Installation
 
-Download repo, create new path mcp-management in root and copy files into that folder. You can configure claude mcp servers that are active project by project, so if you set things up in root you will have to do it again in your project dir.
+Download repo, create new path mcp-management in root and copy files into that folder. 
+
+Create the actual .env file:
+
+Add mcp-manager to your PATH
+  Add this to your ~/.bashrc:
+  echo 'export PATH="$HOME/mcp-management:$PATH"' >> ~/.bashrc
+  echo 'alias mcp-manager="$HOME/mcp-management/mcp-manager.sh"' >> ~/.bashrc
+
+  Then reload your shell:
+  source ~/.bashrc
+
+Install required dependencies
+  The script uses jq for JSON processing:
+  sudo apt-get update && sudo apt-get install -y jq
+
 
 ## Commands
 
