@@ -97,10 +97,10 @@
     "url": "https://mcp.apify.com"
   },
   "mcpServers": {
-      "developer-guides": {
+      "description": "developer-guides",
         "url": "https://developer-guides-mcp.solamp.workers.dev",
         "transport": "http"
       }
     
     }
-  }
+  
