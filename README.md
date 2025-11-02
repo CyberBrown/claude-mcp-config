@@ -7,21 +7,73 @@ Library prepopulated with a few good picks but you can of course change that to 
 
 ## Installation
 
-Download repo, create new path mcp-management in root and copy files into that folder. 
+### Prerequisites
 
-Create the actual .env file:
+The script uses jq for JSON processing. Install it first:
+```bash
+sudo apt-get update && sudo apt-get install -y jq
+```
 
-Add mcp-manager to your PATH
-  Add this to your ~/.bashrc:
-  echo 'export PATH="$HOME/mcp-management:$PATH"' >> ~/.bashrc
-  echo 'alias mcp-manager="$HOME/mcp-management/mcp-manager.sh"' >> ~/.bashrc
+### Automated Installation (Recommended)
 
-  Then reload your shell:
-  source ~/.bashrc
+1. Clone the repository:
+```bash
+git clone https://github.com/CyberBrown/claude-mcp-config.git
+cd claude-mcp-config
+```
 
-Install required dependencies
-  The script uses jq for JSON processing:
-  sudo apt-get update && sudo apt-get install -y jq
+2. Run the installation script:
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+3. Configure your API keys:
+```bash
+nano ~/mcp-management/.env
+```
+
+4. Reload your shell:
+```bash
+source ~/.bashrc
+```
+
+### Manual Installation
+
+If you prefer to install manually:
+
+1. Clone the repository and create the installation directory:
+```bash
+git clone https://github.com/CyberBrown/claude-mcp-config.git
+mkdir -p ~/mcp-management
+```
+
+2. Copy files to the installation directory:
+```bash
+cd claude-mcp-config
+cp mcp-manager.sh servers-library.json .example.env commands.md ~/mcp-management/
+chmod +x ~/mcp-management/mcp-manager.sh
+```
+
+3. Create your .env file:
+```bash
+cp ~/mcp-management/.example.env ~/mcp-management/.env
+nano ~/mcp-management/.env  # Add your API keys
+```
+
+4. Add to your ~/.bashrc (manually edit the file and add these lines):
+```bash
+# Claude MCP Manager
+export PATH="$HOME/mcp-management:$PATH"
+alias mcp-manager="$HOME/mcp-management/mcp-manager.sh"
+```
+
+5. Reload your shell:
+```bash
+source ~/.bashrc
+```
+
+**IMPORTANT:** The directory must be named `mcp-management` (with an 'e' in 'management'). The script expects this exact path.
 
 
 ## Commands
