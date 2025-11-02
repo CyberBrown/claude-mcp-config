@@ -99,7 +99,7 @@
   "developer-guides": {
     "description": "Developer guides MCP server",
     "command": "npx",
-    "args": ["mcp-remote", "https://developer-guides-mcp.solamp.workers.dev"],
+    "args": ["mcp-remote", "https://developer-guides-mcp.solamp.workers.dev/mcp"],
     "type": "stdio"
   }
 }
