@@ -183,6 +183,33 @@ Check that the server name matches exactly what's in `mcp-manager list`.
 **API key errors?**
 Verify your `.env` file has the required keys and run `source ~/.bashrc` to reload.
 
+## Development
+
+### GitHub Authentication
+
+This project uses SSH for GitHub authentication. Ensure your SSH key is set up:
+
+```bash
+# Check for existing SSH key
+ls -la ~/.ssh/id_ed25519.pub
+
+# Or generate a new one
+ssh-keygen -t ed25519 -C "your_email@example.com"
+
+# Add to ssh-agent
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+# Copy public key and add to GitHub Settings > SSH Keys
+cat ~/.ssh/id_ed25519.pub
+```
+
+Clone using SSH:
+
+```bash
+git clone git@github.com:CyberBrown/claude-mcp-config.git
+```
+
 ## License
 
 MIT
