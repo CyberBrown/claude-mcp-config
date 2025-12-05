@@ -131,6 +131,7 @@ mcp-manager reset
 | `context7` | Document library | `CONTEXT7_API_KEY` |
 | `apify` | Web scraping | None |
 | `developer-guides` | Developer documentation | None |
+| `mnemo` | Extended context/memory (1M token cache) | None |
 
 ## Configuration
 

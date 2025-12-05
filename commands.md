@@ -230,3 +230,71 @@ Linear (OAuth version)
   }
 }
 ````
+
+---
+
+# Session Wrap-up Procedures
+
+When ending a development session, follow these steps to ensure all work is saved and documented.
+
+## Wrap-up Checklist
+
+### 1. Check for uncommitted changes
+
+```bash
+git status
+git diff
+```
+
+### 2. Commit any pending work
+
+```bash
+git add -A
+git commit -m "feat/fix/docs: descriptive message"
+```
+
+### 3. Push to remote
+
+```bash
+git push origin main
+```
+
+### 4. Verify documentation is up to date
+
+- [ ] README.md reflects current features
+- [ ] commands.md has all current commands documented
+- [ ] servers-library.json matches README server list
+- [ ] Any new environment variables are in .example.env
+
+### 5. Sync secrets (if changed)
+
+```bash
+mcp-manager push
+```
+
+### 6. Note any unfinished work
+
+Document TODO items or next steps in:
+- GitHub Issues
+- Linear (if enabled)
+- A local notes file
+
+## Quick Wrap-up Commands
+
+```bash
+# One-liner to check, commit, and push
+git status && git add -A && git commit -m "wip: session wrap-up" && git push origin main
+
+# Sync secrets after .env changes
+mcp-manager push
+```
+
+## Before Starting Next Session
+
+```bash
+# Pull latest changes
+git pull origin main
+
+# Sync secrets (auto-runs if needed)
+mcp-manager list
+```
