@@ -101,5 +101,10 @@
     "command": "npx",
     "args": ["mcp-remote", "https://developer-guides-mcp.solamp.workers.dev/mcp"],
     "type": "stdio"
+  },
+  "mnemo": {
+    "description": "Extended context/memory using Gemini's 1M token context cache. Load entire repos and query them.",
+    "type": "http",
+    "url": "https://mnemo.solamp.workers.dev/mcp"
   }
 }
