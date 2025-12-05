@@ -1,6 +1,12 @@
-# Environment variables with secrets
+# Local secrets - never commit
 .env
+sync-config
 
 # Backups
-*.backup.json
-*_backup.json
+*.backup
+
+# Node modules (for secrets-sync worker)
+secrets-sync/node_modules/
+
+# Wrangler
+secrets-sync/.wrangler/

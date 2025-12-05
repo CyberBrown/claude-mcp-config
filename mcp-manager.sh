@@ -3,6 +3,68 @@
 LIBRARY_FILE="$HOME/mcp-management/servers-library.json"
 CONFIG_FILE="$HOME/.claude.json"
 ENV_FILE="$HOME/mcp-management/.env"
+SYNC_CONFIG="$HOME/mcp-management/sync-config"
+PULL_SCRIPT="$HOME/mcp-management/secrets-pull.sh"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Function to check if .env has real values (not placeholders)
+env_has_real_values() {
+    if [ ! -f "$ENV_FILE" ]; then
+        return 1
+    fi
+    # Check if any line contains placeholder text
+    if grep -qE "your_|YOUR_|_here|_HERE|placeholder" "$ENV_FILE" 2>/dev/null; then
+        return 1
+    fi
+    # Check if file has at least one non-comment, non-empty line with a real value
+    if grep -qE "^[A-Za-z_][A-Za-z0-9_]*=.{10,}" "$ENV_FILE" 2>/dev/null; then
+        return 0
+    fi
+    return 1
+}
+
+# Function to auto-pull secrets if needed
+auto_pull_secrets() {
+    if env_has_real_values; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}MCP secrets not found or contain placeholders${NC}"
+
+    # Check if sync is configured
+    if [ ! -f "$SYNC_CONFIG" ]; then
+        echo -e "${YELLOW}Secrets sync not configured.${NC}"
+        echo "To enable auto-sync:"
+        echo "  1. Deploy secrets-sync Worker: cd ~/mcp-management/secrets-sync && npm install && npm run deploy"
+        echo "  2. Copy config: cp ~/mcp-management/sync-config.example ~/mcp-management/sync-config"
+        echo "  3. Edit sync-config with your Worker URL and token"
+        echo "  4. Push your secrets: ~/mcp-management/secrets-push.sh"
+        echo ""
+        echo "Or manually edit $ENV_FILE with your API keys."
+        return 1
+    fi
+
+    # Try to pull secrets
+    echo -e "${YELLOW}Attempting to pull secrets from Cloudflare...${NC}"
+    if [ -x "$PULL_SCRIPT" ]; then
+        "$PULL_SCRIPT" --force
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}Secrets synced successfully!${NC}"
+            return 0
+        fi
+    fi
+
+    echo -e "${RED}Failed to pull secrets. Please check your sync-config.${NC}"
+    return 1
+}
+
+# Auto-pull secrets on startup if needed
+auto_pull_secrets || true
 
 # Load environment variables from .env file
 if [ -f "$ENV_FILE" ]; then
@@ -26,6 +88,8 @@ usage() {
     echo "  enable <servers>  - Enable one or more servers in this project"
     echo "  disable <servers> - Disable one or more servers in this project"
     echo "  reset             - Disable all servers in this project"
+    echo "  sync              - Sync secrets from Cloudflare"
+    echo "  push              - Push local secrets to Cloudflare"
     echo ""
     echo "Examples:"
     echo "  mcp-manager list"
@@ -33,6 +97,42 @@ usage() {
     echo "  mcp-manager enable vibe-check github"
     echo "  mcp-manager disable vibe-check"
     echo "  mcp-manager reset"
+    echo "  mcp-manager sync"
+    echo "  mcp-manager push"
+}
+
+# Function to sync secrets from Cloudflare
+sync_secrets() {
+    if [ ! -f "$SYNC_CONFIG" ]; then
+        echo -e "${RED}Error: Secrets sync not configured${NC}"
+        echo "See: ~/mcp-management/sync-config.example"
+        exit 1
+    fi
+
+    if [ -x "$PULL_SCRIPT" ]; then
+        "$PULL_SCRIPT"
+    else
+        echo -e "${RED}Error: Pull script not found or not executable${NC}"
+        exit 1
+    fi
+}
+
+# Function to push secrets to Cloudflare
+push_secrets() {
+    PUSH_SCRIPT="$HOME/mcp-management/secrets-push.sh"
+
+    if [ ! -f "$SYNC_CONFIG" ]; then
+        echo -e "${RED}Error: Secrets sync not configured${NC}"
+        echo "See: ~/mcp-management/sync-config.example"
+        exit 1
+    fi
+
+    if [ -x "$PUSH_SCRIPT" ]; then
+        "$PUSH_SCRIPT"
+    else
+        echo -e "${RED}Error: Push script not found or not executable${NC}"
+        exit 1
+    fi
 }
 
 # Function to list available servers
@@ -185,6 +285,12 @@ case "$1" in
         ;;
     reset)
         reset_servers
+        ;;
+    sync)
+        sync_secrets
+        ;;
+    push)
+        push_secrets
         ;;
     *)
         usage

@@ -1,0 +1,12 @@
+# MCP Secrets Sync Configuration
+#
+# Copy this file to 'sync-config' and fill in your values:
+#   cp sync-config.example sync-config
+#
+# The sync-config file is gitignored to keep your token safe.
+
+# URL of your deployed secrets-sync Worker
+SECRETS_SYNC_URL=https://mcp-secrets-sync.your-subdomain.workers.dev
+
+# Auth token (set via: wrangler secret put AUTH_TOKEN)
+SECRETS_SYNC_TOKEN=your-secret-token-here

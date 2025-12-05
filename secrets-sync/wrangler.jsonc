@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mcp-secrets-sync",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-01-01",
+  "kv_namespaces": [
+    {
+      "binding": "SECRETS_KV",
+      "id": "90d1f668be544246bb721e3b89c30fc2"
+    }
+  ],
+  "vars": {
+    "ENVIRONMENT": "production"
+  }
+  // AUTH_TOKEN should be set via: wrangler secret put AUTH_TOKEN
+}

@@ -1,22 +1,111 @@
-# See all servers in your library
+# MCP Manager Commands
 
+## Basic Commands
+
+```bash
+# See all servers in your library
 mcp-manager list
 
 # See what's active in current project
-
 mcp-manager active
 
 # Enable servers for current project
-
 mcp-manager enable server1 server2 server3
 
 # Disable servers from current project
-
 mcp-manager disable server1
 
 # Remove all servers from current project
-
 mcp-manager reset
+```
+
+## Secrets Sync Commands
+
+```bash
+# Pull secrets from Cloudflare (manual)
+mcp-manager sync
+
+# Push local secrets to Cloudflare
+mcp-manager push
+```
+
+**Note:** Secrets auto-sync when running mcp-manager if .env is missing or has placeholders.
+
+---
+
+# Cloudflare Secrets Sync Setup
+
+Sync your MCP API keys across machines using Cloudflare Workers KV.
+
+## Initial Setup (One Time)
+
+### 1. Deploy the secrets-sync Worker
+
+```bash
+cd ~/mcp-management/secrets-sync
+npm install
+wrangler login  # Authenticate with Cloudflare
+
+# Create a KV namespace
+wrangler kv namespace create "MCP_SECRETS"
+# Note the ID from output, update wrangler.jsonc with it
+
+# Set your auth token (generate a strong random string)
+wrangler secret put AUTH_TOKEN
+# Enter a secure token when prompted
+
+# Deploy
+npm run deploy
+```
+
+### 2. Configure local sync
+
+```bash
+cd ~/mcp-management
+cp sync-config.example sync-config
+
+# Edit sync-config with your values:
+# SECRETS_SYNC_URL=https://mcp-secrets-sync.YOUR-SUBDOMAIN.workers.dev
+# SECRETS_SYNC_TOKEN=your-auth-token-from-step-1
+```
+
+### 3. Push your existing secrets
+
+```bash
+# Make sure .env has your real API keys
+mcp-manager push
+```
+
+## On a New Machine
+
+```bash
+# 1. Clone/copy mcp-management folder
+# 2. Authenticate with Cloudflare
+wrangler login
+
+# 3. Copy sync-config (you'll need URL and token)
+cp sync-config.example sync-config
+# Edit with your URL and token
+
+# 4. Pull secrets
+mcp-manager sync
+
+# Done! Your secrets are now available
+```
+
+## When Keys Rotate
+
+```bash
+# 1. Update .env with new key
+nano ~/.mcp-management/.env
+
+# 2. Push to Cloudflare
+mcp-manager push
+
+# Other machines will auto-pull on next mcp-manager run
+```
+
+---
 
 # Installing New MCP Servers
 
