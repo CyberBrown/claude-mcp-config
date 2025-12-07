@@ -23,7 +23,10 @@ SECRETS_SYNC_TOKEN=your-secret-token-here
 #
 # Option 2: API Token (for headless/remote servers)
 #   - Create token at: https://dash.cloudflare.com/profile/api-tokens
-#   - Use "Edit Cloudflare Workers" template
+#   - Use "Edit Cloudflare Workers" template, or create custom with:
+#     - Account: Workers Scripts (Edit)
+#     - Account: Workers KV Storage (Edit)
+#     - Account: Account Settings (Read)
 #   - Set the token below
 #   - Best for: remote servers, CI/CD, headless environments
 #

@@ -199,7 +199,11 @@ See `commands.md` for full setup instructions.
 | Browser OAuth | Local machines with browser | `npm run auth` → Option 1 |
 | API Token | Remote/headless servers | `npm run auth` → Option 2 |
 
-For remote servers without browser access, create an API token at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens) using the "Edit Cloudflare Workers" template.
+For remote servers without browser access, create an API token at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens) using the "Edit Cloudflare Workers" template, or create a custom token with these permissions:
+
+- **Account: Workers Scripts** - Edit
+- **Account: Workers KV Storage** - Edit
+- **Account: Account Settings** - Read
 
 ## How It Works
 

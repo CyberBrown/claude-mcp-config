@@ -91,7 +91,10 @@ auth_token() {
     echo "To create an API token:"
     echo "  1. Go to: https://dash.cloudflare.com/profile/api-tokens"
     echo "  2. Click 'Create Token'"
-    echo "  3. Use the 'Edit Cloudflare Workers' template"
+    echo "  3. Use 'Edit Cloudflare Workers' template, or custom with:"
+    echo "     - Account: Workers Scripts (Edit)"
+    echo "     - Account: Workers KV Storage (Edit)"
+    echo "     - Account: Account Settings (Read)"
     echo "  4. Copy the generated token"
     echo ""
 

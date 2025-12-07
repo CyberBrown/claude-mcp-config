@@ -61,9 +61,12 @@ npx wrangler login
 **Option B: API Token** (for remote/headless servers)
 ```bash
 npm run auth
-# Select option 2, or:
+# Select option 2, or manually:
 # 1. Create token at: https://dash.cloudflare.com/profile/api-tokens
-# 2. Use "Edit Cloudflare Workers" template
+# 2. Use "Edit Cloudflare Workers" template, or custom with these permissions:
+#    - Account: Workers Scripts (Edit)
+#    - Account: Workers KV Storage (Edit)
+#    - Account: Account Settings (Read)
 # 3. Add to sync-config: CLOUDFLARE_API_TOKEN=your-token-here
 ```
 
