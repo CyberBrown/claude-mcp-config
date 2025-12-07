@@ -137,10 +137,37 @@ push_secrets() {
     fi
 }
 
+# Function to check for updates
+check_for_updates() {
+    REPO_DIR="$HOME/mcp-management"
+    if [ -d "$REPO_DIR/.git" ]; then
+        cd "$REPO_DIR"
+        # Fetch latest from remote quietly
+        git fetch --quiet 2>/dev/null
+
+        # Compare local and remote HEAD
+        LOCAL=$(git rev-parse HEAD 2>/dev/null)
+        REMOTE=$(git rev-parse @{u} 2>/dev/null)
+
+        cd - > /dev/null
+
+        if [ -n "$LOCAL" ] && [ -n "$REMOTE" ] && [ "$LOCAL" != "$REMOTE" ]; then
+            return 0  # Update available
+        fi
+    fi
+    return 1  # No update or couldn't check
+}
+
 # Function to list available servers
 list_servers() {
     echo "Available MCP servers in library:"
     jq -r 'keys[]' "$LIBRARY_FILE" 2>/dev/null || echo "Error: Could not read library file"
+
+    # Check for updates
+    if check_for_updates; then
+        echo ""
+        echo -e "${YELLOW}⚠ Update available! Run 'mcp-manager update' to get the latest servers.${NC}"
+    fi
 }
 
 # Function to show active servers
