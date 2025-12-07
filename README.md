@@ -166,6 +166,41 @@ Example server entry:
 
 Environment variables in the format `${VAR_NAME}` are automatically expanded from your `.env` file.
 
+## Secrets Sync (Optional)
+
+For users who work across multiple machines, you can optionally sync your API keys using Cloudflare Workers KV. This is **completely optional** - you can always just use a local `.env` file.
+
+### Local Only (Default)
+
+Just edit your `.env` file directly:
+
+```bash
+cp ~/mcp-management/.example.env ~/mcp-management/.env
+nano ~/mcp-management/.env
+```
+
+### Multi-Machine Sync
+
+Set up Cloudflare sync to share API keys across machines:
+
+```bash
+cd ~/mcp-management/secrets-sync
+npm install
+npm run auth  # Choose browser OAuth or API token
+npm run deploy
+```
+
+See `commands.md` for full setup instructions.
+
+#### Authentication Options
+
+| Method | Best For | Command |
+|--------|----------|---------|
+| Browser OAuth | Local machines with browser | `npm run auth` → Option 1 |
+| API Token | Remote/headless servers | `npm run auth` → Option 2 |
+
+For remote servers without browser access, create an API token at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens) using the "Edit Cloudflare Workers" template.
+
 ## How It Works
 
 1. Server configurations are stored in `servers-library.json`

@@ -34,18 +34,20 @@ auto_pull_secrets() {
         return 0
     fi
 
-    echo -e "${YELLOW}MCP secrets not found or contain placeholders${NC}"
-
     # Check if sync is configured
     if [ ! -f "$SYNC_CONFIG" ]; then
-        echo -e "${YELLOW}Secrets sync not configured.${NC}"
-        echo "To enable auto-sync:"
-        echo "  1. Deploy secrets-sync Worker: cd ~/mcp-management/secrets-sync && npm install && npm run deploy"
-        echo "  2. Copy config: cp ~/mcp-management/sync-config.example ~/mcp-management/sync-config"
-        echo "  3. Edit sync-config with your Worker URL and token"
-        echo "  4. Push your secrets: ~/mcp-management/secrets-push.sh"
-        echo ""
-        echo "Or manually edit $ENV_FILE with your API keys."
+        # Only show message if .env doesn't exist at all (first run)
+        if [ ! -f "$ENV_FILE" ]; then
+            echo -e "${YELLOW}No .env file found.${NC}"
+            echo ""
+            echo "Option 1: Create .env manually"
+            echo "  cp ~/mcp-management/.example.env ~/mcp-management/.env"
+            echo "  # Then edit with your API keys"
+            echo ""
+            echo "Option 2: Set up Cloudflare sync (for multi-machine)"
+            echo "  See: ~/mcp-management/commands.md"
+            echo ""
+        fi
         return 1
     fi
 

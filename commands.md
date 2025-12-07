@@ -44,14 +44,38 @@ Sync your MCP API keys across machines using Cloudflare Workers KV.
 ```bash
 cd ~/mcp-management/secrets-sync
 npm install
-wrangler login  # Authenticate with Cloudflare
 
+# Authenticate with Cloudflare (choose one method)
+npm run auth  # Interactive menu with both options
+```
+
+#### Authentication Options
+
+**Option A: Browser OAuth** (for machines with browser access)
+```bash
+npm run auth
+# Select option 1, or run directly:
+npx wrangler login
+```
+
+**Option B: API Token** (for remote/headless servers)
+```bash
+npm run auth
+# Select option 2, or:
+# 1. Create token at: https://dash.cloudflare.com/profile/api-tokens
+# 2. Use "Edit Cloudflare Workers" template
+# 3. Add to sync-config: CLOUDFLARE_API_TOKEN=your-token-here
+```
+
+#### Continue Setup
+
+```bash
 # Create a KV namespace
-wrangler kv namespace create "MCP_SECRETS"
+npx wrangler kv namespace create "MCP_SECRETS"
 # Note the ID from output, update wrangler.jsonc with it
 
 # Set your auth token (generate a strong random string)
-wrangler secret put AUTH_TOKEN
+npx wrangler secret put AUTH_TOKEN
 # Enter a secure token when prompted
 
 # Deploy
@@ -80,17 +104,30 @@ mcp-manager push
 
 ```bash
 # 1. Clone/copy mcp-management folder
-# 2. Authenticate with Cloudflare
-wrangler login
 
-# 3. Copy sync-config (you'll need URL and token)
+# 2. Copy sync-config (you'll need URL and token)
 cp sync-config.example sync-config
-# Edit with your URL and token
+# Edit with your URL and SECRETS_SYNC_TOKEN
 
-# 4. Pull secrets
+# 3. Pull secrets (no Cloudflare auth needed for pull/push)
 mcp-manager sync
 
 # Done! Your secrets are now available
+```
+
+### If You Need to Deploy/Modify the Worker
+
+Only needed if you're managing the worker itself (not just syncing secrets):
+
+```bash
+cd ~/mcp-management/secrets-sync
+npm install
+
+# Authenticate with Cloudflare
+npm run auth  # Choose browser or API token based on your environment
+
+# Now you can deploy, view logs, etc.
+npm run deploy
 ```
 
 ## When Keys Rotate

@@ -10,3 +10,21 @@ SECRETS_SYNC_URL=https://mcp-secrets-sync.your-subdomain.workers.dev
 
 # Auth token (set via: wrangler secret put AUTH_TOKEN)
 SECRETS_SYNC_TOKEN=your-secret-token-here
+
+# ============================================================
+# Cloudflare API Authentication (for wrangler commands)
+# ============================================================
+# Choose ONE of two authentication methods:
+#
+# Option 1: Browser OAuth (default)
+#   - Leave CLOUDFLARE_API_TOKEN empty/commented
+#   - Run: ./wrangler-auth.sh (or wrangler login)
+#   - Best for: local development on machines with browsers
+#
+# Option 2: API Token (for headless/remote servers)
+#   - Create token at: https://dash.cloudflare.com/profile/api-tokens
+#   - Use "Edit Cloudflare Workers" template
+#   - Set the token below
+#   - Best for: remote servers, CI/CD, headless environments
+#
+# CLOUDFLARE_API_TOKEN=your-api-token-here

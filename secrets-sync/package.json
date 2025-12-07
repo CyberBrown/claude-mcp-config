@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "dev": "[ -f ../sync-config ] && set -a && . ../sync-config && set +a; wrangler dev",
+    "deploy": "[ -f ../sync-config ] && set -a && . ../sync-config && set +a; wrangler deploy",
+    "cf-typegen": "wrangler types",
+    "auth": "./wrangler-auth.sh",
+    "auth:status": "./wrangler-auth.sh --status",
+    "auth:token": "./wrangler-auth.sh --token"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241127.0",
     "typescript": "^5.5.0",
-    "wrangler": "^3.99.0"
+    "wrangler": "^4.53.0"
   }
 }
