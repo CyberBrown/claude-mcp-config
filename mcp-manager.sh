@@ -87,6 +87,7 @@ usage() {
     echo "  active            - Show currently active servers in this project"
     echo "  enable <servers>  - Enable one or more servers in this project"
     echo "  disable <servers> - Disable one or more servers in this project"
+    echo "  update            - Pull repo and update all active servers from library"
     echo "  reset             - Disable all servers in this project"
     echo "  sync              - Sync secrets from Cloudflare"
     echo "  push              - Push local secrets to Cloudflare"
@@ -96,6 +97,7 @@ usage() {
     echo "  mcp-manager active"
     echo "  mcp-manager enable vibe-check github"
     echo "  mcp-manager disable vibe-check"
+    echo "  mcp-manager update"
     echo "  mcp-manager reset"
     echo "  mcp-manager sync"
     echo "  mcp-manager push"
@@ -238,6 +240,78 @@ disable_servers() {
     echo "Done! Restart Claude Code for changes to take effect."
 }
 
+# Function to update servers from library
+update_servers() {
+    PROJECT_PATH=$(get_project_path)
+
+    # Pull latest changes from repo
+    echo "Pulling latest server library..."
+    REPO_DIR="$HOME/mcp-management"
+    if [ -d "$REPO_DIR/.git" ]; then
+        cd "$REPO_DIR" && git pull --quiet
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}✓ Repository updated${NC}"
+        else
+            echo -e "${YELLOW}⚠ Could not pull repo (continuing with local library)${NC}"
+        fi
+        cd - > /dev/null
+    else
+        echo -e "${YELLOW}⚠ No git repo found at $REPO_DIR${NC}"
+    fi
+    echo ""
+
+    if [ ! -f "$CONFIG_FILE" ]; then
+        echo "No config file found, nothing to update"
+        return
+    fi
+
+    CURRENT_CONFIG=$(cat "$CONFIG_FILE")
+
+    # Get list of currently active servers
+    ACTIVE_SERVERS=$(echo "$CURRENT_CONFIG" | jq -r --arg path "$PROJECT_PATH" '.projects[$path].mcpServers // {} | keys[]' 2>/dev/null)
+
+    if [ -z "$ACTIVE_SERVERS" ]; then
+        echo "No active servers to update in $PROJECT_PATH"
+        return
+    fi
+
+    UPDATED=0
+    SKIPPED=0
+
+    for SERVER in $ACTIVE_SERVERS; do
+        # Check if server exists in library
+        SERVER_CONFIG=$(jq -r --arg name "$SERVER" '.[$name] // empty' "$LIBRARY_FILE")
+
+        if [ -z "$SERVER_CONFIG" ]; then
+            echo -e "${YELLOW}⊘ Skipped: $SERVER (not in library, keeping custom config)${NC}"
+            ((SKIPPED++))
+            continue
+        fi
+
+        # Expand environment variables in the server config
+        SERVER_CONFIG_EXPANDED=$(echo "$SERVER_CONFIG" | jq 'walk(
+            if type == "string" and startswith("${") and endswith("}") then
+                env[.[2:-1]]
+            else
+                .
+            end
+        )')
+
+        # Update server in project config
+        CURRENT_CONFIG=$(echo "$CURRENT_CONFIG" | jq --arg path "$PROJECT_PATH" --arg name "$SERVER" --argjson config "$SERVER_CONFIG_EXPANDED" \
+            '.projects[$path].mcpServers[$name] = $config')
+
+        echo -e "${GREEN}✓ Updated: $SERVER${NC}"
+        ((UPDATED++))
+    done
+
+    # Write updated config
+    echo "$CURRENT_CONFIG" | jq . > "$CONFIG_FILE"
+    echo ""
+    echo "Updated $UPDATED server(s), skipped $SKIPPED custom server(s)."
+    echo "Restart Claude Code for changes to take effect."
+}
+
 # Function to reset (disable all)
 reset_servers() {
     PROJECT_PATH=$(get_project_path)
@@ -282,6 +356,9 @@ case "$1" in
             exit 1
         fi
         disable_servers "$@"
+        ;;
+    update)
+        update_servers
         ;;
     reset)
         reset_servers
