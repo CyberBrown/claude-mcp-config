@@ -103,8 +103,11 @@
     "type": "stdio"
   },
   "mnemo": {
-    "description": "Extended context/memory using Gemini's 1M token context cache. Load entire repos and query them. Set MNEMO_URL in your .env to your deployed instance (e.g., https://mnemo.your-subdomain.workers.dev/mcp).",
+    "description": "Extended context/memory using Gemini's 1M token context cache. Load entire repos and query them. Set MNEMO_URL and MNEMO_AUTH_TOKEN in your .env.",
     "type": "http",
-    "url": "${MNEMO_URL}"
+    "url": "${MNEMO_URL}",
+    "headers": {
+      "Authorization": "Bearer ${MNEMO_AUTH_TOKEN}"
+    }
   }
 }
