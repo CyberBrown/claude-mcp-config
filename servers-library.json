@@ -103,8 +103,8 @@
     "type": "stdio"
   },
   "mnemo": {
-    "description": "Extended context/memory using Gemini's 1M token context cache. Load entire repos and query them.",
+    "description": "Extended context/memory using Gemini's 1M token context cache. Load entire repos and query them. Set MNEMO_URL in your .env to your deployed instance (e.g., https://mnemo.your-subdomain.workers.dev/mcp).",
     "type": "http",
-    "url": "https://mnemo.solamp.workers.dev/mcp"
+    "url": "${MNEMO_URL}"
   }
 }
