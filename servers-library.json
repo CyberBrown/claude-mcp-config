@@ -103,8 +103,11 @@
     "type": "stdio"
   },
   "mnemo": {
-    "description": "Extended context/memory using Gemini's 1M token context cache. Load entire repos and query them.",
+    "description": "Extended context/memory using Gemini's 1M token context cache. Load entire repos and query them. Set MNEMO_URL and MNEMO_AUTH_TOKEN in your .env.",
     "type": "http",
-    "url": "https://mnemo.solamp.workers.dev/mcp"
+    "url": "${MNEMO_URL}",
+    "headers": {
+      "Authorization": "Bearer ${MNEMO_AUTH_TOKEN}"
+    }
   }
 }
