@@ -97,17 +97,36 @@
     "url": "https://mcp.apify.com"
   },
   "developer-guides": {
-    "description": "Developer guides MCP server",
+    "description": "Developer guides MCP server with CF Access auth",
     "command": "npx",
-    "args": ["mcp-remote", "https://developer-guides-mcp.solamp.workers.dev/mcp"],
+    "args": [
+      "mcp-remote",
+      "https://developer-guides-mcp.solamp.workers.dev/mcp",
+      "--header", "CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}",
+      "--header", "CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}"
+    ],
     "type": "stdio"
   },
   "mnemo": {
-    "description": "Extended context/memory using Gemini's 1M token context cache. Load entire repos and query them. Set MNEMO_URL and MNEMO_AUTH_TOKEN in your .env.",
-    "type": "http",
-    "url": "${MNEMO_URL}",
-    "headers": {
-      "Authorization": "Bearer ${MNEMO_AUTH_TOKEN}"
-    }
+    "description": "Extended context/memory using Gemini's 1M token context cache. Load entire repos and query them.",
+    "command": "npx",
+    "args": [
+      "mcp-remote",
+      "https://mnemo.logosflux.io/mcp",
+      "--header", "CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}",
+      "--header", "CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}"
+    ],
+    "type": "stdio"
+  },
+  "nexus": {
+    "description": "Task and idea management system with AI planning, execution queues, and project tracking",
+    "command": "npx",
+    "args": [
+      "mcp-remote",
+      "https://nexus-mcp.solamp.workers.dev/mcp",
+      "--header", "CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}",
+      "--header", "CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}"
+    ],
+    "type": "stdio"
   }
 }
