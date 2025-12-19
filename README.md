@@ -1,4 +1,34 @@
-# Claude MCP Manager
+# ⚠️ ARCHIVED - Now Part of Chezmoi Dotfiles
+
+> **This repo has been integrated into [chezmoi](https://www.chezmoi.io/) dotfile management.**
+>
+> **New repo:** [CyberBrown/dotfiles](https://github.com/CyberBrown/dotfiles)
+
+## Migration
+
+MCP Manager is now installed automatically via chezmoi:
+
+```bash
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:CyberBrown/dotfiles.git -b ~/.local/bin
+source ~/.bashrc
+```
+
+This installs:
+- `mcp-manager` command to `~/mcp-management/`
+- All 18+ pre-configured MCP servers
+- Secrets sync scripts for Cloudflare KV
+- The `mcp-manager` alias in your shell
+
+Usage remains the same:
+```bash
+mcp-manager list
+mcp-manager enable sequential-thinking github
+mcp-manager sync  # Pull secrets from Cloudflare
+```
+
+---
+
+# Claude MCP Manager (Legacy)
 
 A command-line tool for managing MCP (Model Context Protocol) servers for Claude CLI and Claude Code.
 
